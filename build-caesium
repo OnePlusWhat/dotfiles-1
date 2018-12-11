@@ -8,10 +8,9 @@
 SCRIPT_DIR="$(cd "$( dirname "$( readlink -f "${BASH_SOURCE[0]}" )" )" && pwd)"
 source "${SCRIPT_DIR}"/common
 
-[ -f ".buildconfig" ] && source ".buildconfig"
-[ -z "${DEFCONFIG}" ] && DEFCONFIG="caesium_defconfig"
-[ -z "${KERNEL}" ] && KERNEL="Image.gz-dtb"
-[ -z "${DEFAULT_BRANCH}" ] && DEFAULT_BRANCH="XOS-8.1"
+DEFCONFIG="caesium_defconfig"
+KERNEL="Image.gz-dtb"
+DEFAULT_BRANCH="XOS-8.1"
 TREES="rr:pie|aosip:pie"
 JARVISBOX_URL="https://download.msfjarvis.website/caesium"
 
@@ -31,18 +30,20 @@ HOST=jarvisbox
 
 # Paths
 WORKING_DIR=$(pwd)
-[ -z "${ANYKERNEL_DIR}" ] && ANYKERNEL_DIR="${WORKING_DIR}/../AnyKernel2"
-[ -z "${ARM64_TOOLCHAIN_DIR}" ] && ARM64_TOOLCHAIN_DIR="${WORKING_DIR}/../toolchains/aarch64-linux-gnu"
-[ -z "${ARM_TOOLCHAIN_DIR}" ] && ARM_TOOLCHAIN_DIR="${WORKING_DIR}/../toolchains/arm-linux-gnueabi"
-[ -z "${CLANG_TOOLCHAIN_DIR}" ] && CLANG_TOOLCHAIN_DIR=""
-[ -z "${CLANG_TRIPLE}" ] && CLANG_TRIPLE=""
-[ -z "${COMPILER}" ] && COMPILER="gcc"
+ANYKERNEL_DIR="${WORKING_DIR}/../AnyKernel2"
+ARM64_TOOLCHAIN_DIR="${WORKING_DIR}/../toolchains/aarch64-linux-gnu"
+ARM_TOOLCHAIN_DIR="${WORKING_DIR}/../toolchains/arm-linux-gnueabi"
+CLANG_TOOLCHAIN_DIR=""
+COMPILER="gcc"
 OUT_DIR="${WORKING_DIR}/out/"
 ZIP_MOVE="${WORKING_DIR}/zips/"
 CCACHE="$(command -v ccache)"
 
 # Trap to bail out properly
 trap 'exit 1' SIGINT SIGTERM
+
+# Load overrides
+[ -f ".buildconfig" ] && source ".buildconfig"
 
 ## Functions
 # Wrapper around tgm to avoid having to pass the second chat ID param everywhere
